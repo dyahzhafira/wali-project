@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MessageCircle, Send, CheckCircle, MapPin, Camera, AlertTriangle, ArrowRight, Shield, Info } from "lucide-react";
+import { MessageCircle, Send, CheckCircle, MapPin, Camera, AlertTriangle, ArrowRight } from "lucide-react";
 
 const STEPS = [
   {
@@ -128,64 +128,17 @@ export default function TelegramPage() {
         </div>
       </div>
 
-      {/* Rate limiting explanation */}
-      <div className="px-6 py-12 bg-gray-50">
+      {/* Etika pelaporan */}
+      <div className="px-6 py-10 bg-gray-50">
         <div className="max-w-2xl mx-auto">
-          <div className="flex items-center gap-2 mb-2">
-            <Shield size={20} className="text-wali-700" />
-            <h2 className="text-2xl font-bold text-gray-900">Sistem Batas Pelaporan</h2>
-          </div>
-          <p className="text-gray-500 text-sm mb-6">Bagaimana WALI mencegah laporan spam di Telegram vs. Web</p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            {/* Telegram */}
-            <div className="bg-white rounded-2xl border border-wali-100 p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-wali-50 flex items-center justify-center">
-                  <Send size={16} className="text-wali-700" />
-                </div>
-                <h3 className="font-bold text-gray-900">Via Telegram</h3>
-              </div>
-              <p className="text-sm text-gray-600 leading-relaxed mb-3">
-                Identitas pelapor diverifikasi langsung dari <strong>Telegram User ID</strong> — angka unik yang ditetapkan Telegram untuk setiap akun. Tidak bisa dipalsukan atau diubah.
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-4">
+            <AlertTriangle size={20} className="text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-bold text-amber-800 mb-1">Gunakan Fitur Ini dengan Bijak</p>
+              <p className="text-sm text-amber-700 leading-relaxed">
+                Sistem WALI — baik melalui Telegram maupun website — dilengkapi mekanisme deteksi laporan tidak wajar. Setiap laporan yang masuk dapat dilacak dan diverifikasi oleh tim admin. Laporan palsu, berulang, atau yang tidak mencerminkan kondisi nyata di lapangan dapat dihapus dan dilaporkan kepada pihak berwenang. Gunakan platform ini untuk melaporkan kejadian yang benar-benar Anda temukan secara langsung.
               </p>
-              <div className="bg-wali-50 rounded-xl p-3">
-                <p className="text-xs font-semibold text-wali-700 mb-1">Mekanisme:</p>
-                <ul className="text-xs text-wali-600 space-y-1">
-                  <li>• Setiap laporan ditandai dengan Telegram User ID Anda</li>
-                  <li>• Laporan dari akun yang sama terdeteksi secara otomatis</li>
-                  <li>• Tidak perlu fingerprint browser — identitas sudah pasti</li>
-                </ul>
-              </div>
             </div>
-
-            {/* Web */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center">
-                  <Info size={16} className="text-gray-500" />
-                </div>
-                <h3 className="font-bold text-gray-900">Via Web</h3>
-              </div>
-              <p className="text-sm text-gray-600 leading-relaxed mb-3">
-                Karena web bersifat anonim (tidak perlu login), sistem menggunakan kombinasi <strong>IP Address</strong> dan <strong>fingerprint browser</strong> untuk membatasi laporan spam.
-              </p>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs font-semibold text-gray-600 mb-1">Mekanisme:</p>
-                <ul className="text-xs text-gray-500 space-y-1">
-                  <li>• IP Address dicatat di setiap laporan</li>
-                  <li>• Batas: 12 laporan per IP per hari</li>
-                  <li>• Petugas dinas tidak dibatasi (sudah login)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl border border-amber-100 p-4 flex gap-3">
-            <AlertTriangle size={18} className="text-amber-500 shrink-0 mt-0.5" />
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Laporan yang terindikasi spam atau tidak valid dapat dihapus oleh admin. Harap laporkan kejadian nyata yang Anda temukan secara langsung.
-            </p>
           </div>
         </div>
       </div>
