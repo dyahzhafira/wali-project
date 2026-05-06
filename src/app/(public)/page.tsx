@@ -5,24 +5,38 @@ import { id } from "date-fns/locale";
 import { StatusBadge } from "@/components/ui/Badge";
 import MiniMapClient from "@/components/map/MiniMapClient";
 import { MapPin, MessageSquare, ThumbsUp, Shield } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
 async function getStats() {
-  const fallback = { total_reports: 0, active_reports: 0, reports_today: 0, reports_in_progress: 0, reports_done_this_month: 0 };
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/stats`, { next: { revalidate: 60 } });
-    if (!res.ok) return fallback;
-    return res.json();
-  } catch { return fallback; }
+    const supabase = await createClient();
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+    const [total, inProgress, doneMonth, today] = await Promise.all([
+      supabase.from("reports").select("*", { count: "exact", head: true }),
+      supabase.from("reports").select("*", { count: "exact", head: true }).eq("status", "proses"),
+      supabase.from("reports").select("*", { count: "exact", head: true }).eq("status", "selesai").gte("created_at", monthStart),
+      supabase.from("reports").select("*", { count: "exact", head: true }).gte("created_at", todayStart),
+    ]);
+    return {
+      total_reports: total.count ?? 0,
+      reports_in_progress: inProgress.count ?? 0,
+      reports_done_this_month: doneMonth.count ?? 0,
+      reports_today: today.count ?? 0,
+    };
+  } catch { return { total_reports: 0, reports_in_progress: 0, reports_done_this_month: 0, reports_today: 0 }; }
 }
 
 async function getRecentReports() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/reports?limit=6&sort=created_at`, { next: { revalidate: 30 } });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.reports || [];
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("reports")
+      .select("id, photos, description, location_name, status, urgency_scale, react_count, created_at")
+      .order("created_at", { ascending: false })
+      .limit(6);
+    return data ?? [];
   } catch { return []; }
 }
 
