@@ -1,5 +1,5 @@
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN!;
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://wali-lake.vercel.app";
+const BOT_TOKEN = (process.env.TELEGRAM_BOT_TOKEN ?? "").replace(/^﻿/, "");
+const BASE_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/^﻿/, "") || "https://wali-lake.vercel.app";
 
 type ConversationStep =
   | "idle"
@@ -182,21 +182,28 @@ async function askUrgency(chatId: number | string) {
 async function submitReport(chatId: number | string, userId: string, state: ConversationState, urgency: number) {
   clearState(userId);
 
-  const res = await fetch(`${BASE_URL}/api/reports`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      source: "telegram",
-      photos: state.photos,
-      description: state.description ?? "",
-      location_lat: state.location_lat ?? 0,
-      location_lng: state.location_lng ?? 0,
-      location_name: state.location_name ?? "",
-      water_body_type: state.water_body_type,
-      urgency_scale: urgency,
-      telegram_user_id: userId,
-    }),
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${BASE_URL}/api/reports`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        source: "telegram",
+        photos: state.photos,
+        description: state.description ?? "",
+        location_lat: state.location_lat ?? 0,
+        location_lng: state.location_lng ?? 0,
+        location_name: state.location_name ?? "",
+        water_body_type: state.water_body_type,
+        urgency_scale: urgency,
+        telegram_user_id: userId,
+      }),
+    });
+  } catch (fetchErr) {
+    console.error("[WALI bot] submitReport fetch error:", fetchErr);
+    await sendMessage(chatId, `❌ Gagal menghubungi server. Coba lagi dengan /lapor.`);
+    return;
+  }
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));

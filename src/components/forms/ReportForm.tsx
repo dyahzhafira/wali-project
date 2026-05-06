@@ -6,7 +6,6 @@ import PhotoUploader from "./PhotoUploader";
 import LocationPicker from "./LocationPicker";
 import UrgencyScale from "./UrgencyScale";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { cn } from "@/components/ui/cn";
 
 interface Props { onSuccess: (token: string, reportId: string) => void; }
@@ -20,7 +19,6 @@ export default function ReportForm({ onSuccess }: Props) {
   const [description, setDescription] = useState("");
   const [waterBody, setWaterBody] = useState("");
   const [urgency, setUrgency] = useState<number | null>(null);
-  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -66,7 +64,6 @@ export default function ReportForm({ onSuccess }: Props) {
           location_name: location!.name,
           water_body_type: waterBody || undefined,
           urgency_scale: urgency,
-          reporter_email: email.trim() || undefined,
         }),
       });
 
@@ -182,7 +179,6 @@ export default function ReportForm({ onSuccess }: Props) {
               <p><span className="font-medium">Urgensi:</span> {urgency}/5</p>
               {waterBody && <p><span className="font-medium">Perairan:</span> {waterBody}</p>}
             </div>
-            <Input label="Email untuk notifikasi (opsional)" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="email@example.com" hint="Kami akan mengirim update laporan Anda ke email ini" />
           </div>
         )}
 

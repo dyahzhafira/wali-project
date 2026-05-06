@@ -94,7 +94,7 @@ export default function AdminLoginPage() {
           </form>
 
           <div className="mt-6 pt-5 border-t border-gray-100 text-center">
-            <p className="text-xs text-gray-400">Demo: admin@wali.id / admin123</p>
+            <p className="text-xs text-gray-400">Demo: admin@wali.id / Admin@2025!</p>
           </div>
         </div>
 

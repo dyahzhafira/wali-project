@@ -4,7 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
 import { StatusBadge } from "@/components/ui/Badge";
 import MiniMapClient from "@/components/map/MiniMapClient";
-import { MapPin, MessageSquare, ThumbsUp, Shield } from "lucide-react";
+import { MapPin, ThumbsUp, Shield } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 
 async function getStats() {
@@ -272,9 +272,6 @@ export default async function LandingPage() {
                     <div className="flex items-center gap-3 mt-3 pt-2 border-t border-gray-50">
                       <span className="flex items-center gap-1 text-xs text-gray-400">
                         <ThumbsUp size={12} /> {report.react_count ?? 0}
-                      </span>
-                      <span className="flex items-center gap-1 text-xs text-gray-400">
-                        <MessageSquare size={12} /> {report.comment_count ?? 0}
                       </span>
                       <span className="ml-auto text-xs font-semibold text-wali-600 group-hover:underline">Lihat Detail →</span>
                     </div>
