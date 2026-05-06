@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wali-50:  #e6f4f1;
+  --color-wali-100: #c8ede7;
+  --color-wali-200: #9ddcd0;
+  --color-wali-300: #6ac4b6;
+  --color-wali-400: #3dab9b;
+  --color-wali-500: #2a9e8e;
+  --color-wali-600: #228076;
+  --color-wali-700: #1b6560;
+  --color-wali-800: #174f4b;
+  --color-wali-900: #123c39;
+  --color-wali-950: #0a2422;
+
+  --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: #ffffff;
+  color: #111827;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Header solid — dark teal, no gradient */
+.wali-header {
+  background: #0e7490;
+}
+
+/* Legacy alias — now solid color, no gradient */
+.wali-gradient {
+  background: #0e7490;
+}
+
+/* Dark teal used on admin accent areas */
+.wali-gradient-dark {
+  background: #1b6560;
+}
+
+/* CTA buttons — solid teal, no cream fade */
+.btn-gradient {
+  background: linear-gradient(135deg, #066A5F 0%, #1d8a7a 100%);
+}
+
+/* Section backgrounds */
+.bg-section-light {
+  background: #f0fdfa;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
