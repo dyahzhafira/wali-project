@@ -5,11 +5,11 @@ import { createClient } from "@/lib/supabase/server";
 import DashboardCharts from "@/components/dashboard/DashboardCharts";
 
 async function getDashboardData() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-  const statsRes = await fetch(`${baseUrl}/api/stats`, { next: { revalidate: 60 } });
-  const stats = statsRes.ok ? await statsRes.json() : {};
-
   const supabase = await createClient();
+
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
   const days = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
@@ -18,10 +18,28 @@ async function getDashboardData() {
   });
   const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-  const [{ data: recentRows }, { data: allRows }] = await Promise.all([
+  const [
+    { data: recentRows },
+    { data: allRows },
+    totalResult,
+    todayResult,
+    inProgressResult,
+    doneThisMonthResult,
+  ] = await Promise.all([
     supabase.from("reports").select("created_at, status, urgency_scale").gte("created_at", since),
     supabase.from("reports").select("status, urgency_scale"),
+    supabase.from("reports").select("*", { count: "exact", head: true }),
+    supabase.from("reports").select("*", { count: "exact", head: true }).gte("created_at", todayStart),
+    supabase.from("reports").select("*", { count: "exact", head: true }).eq("status", "proses"),
+    supabase.from("reports").select("*", { count: "exact", head: true }).eq("status", "selesai").gte("created_at", monthStart),
   ]);
+
+  const stats = {
+    total_reports: totalResult.count ?? 0,
+    reports_today: todayResult.count ?? 0,
+    reports_in_progress: inProgressResult.count ?? 0,
+    reports_done_this_month: doneThisMonthResult.count ?? 0,
+  };
 
   const rows = recentRows ?? [];
   const all = allRows ?? [];
