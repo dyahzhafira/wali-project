@@ -573,6 +573,25 @@ async function handleUpdate(update: any) {
 
 // ─── Route handler ─────────────────────────────────────────────────────────────
 
+export async function GET() {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const hasToken = !!token && token.length > 10;
+  const preview = token ? `${token.slice(0, 6)}...${token.slice(-4)}` : "MISSING";
+
+  // Try sending a message via getMe
+  let botInfo = null;
+  if (hasToken) {
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${token}/getMe`);
+      botInfo = await res.json();
+    } catch (e) {
+      botInfo = { error: String(e) };
+    }
+  }
+
+  return Response.json({ hasToken, preview, botInfo });
+}
+
 export async function POST(request: Request) {
   const secretToken = request.headers.get("x-telegram-bot-api-secret-token");
   if (
