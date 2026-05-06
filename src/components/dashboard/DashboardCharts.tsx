@@ -45,7 +45,7 @@ export default function DashboardCharts({ daily, byStatus, byUrgency }: Props) {
             <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
             <Tooltip
               contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }}
-              formatter={(v: number) => [v, "Laporan"]}
+              formatter={(v) => [v, "Laporan"]}
             />
             <Line type="monotone" dataKey="count" stroke="#1b6560" strokeWidth={2.5} dot={{ fill: "#1b6560", r: 4 }} activeDot={{ r: 6 }} />
           </LineChart>
@@ -60,7 +60,7 @@ export default function DashboardCharts({ daily, byStatus, byUrgency }: Props) {
             <Pie data={byStatus} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={3} dataKey="value">
               {byStatus.map((entry, i) => <Cell key={i} fill={entry.color} />)}
             </Pie>
-            <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} formatter={(v: number, _: string, props: any) => [v, props.payload.name]} />
+            <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} formatter={(v, _, props: any) => [v, props.payload.name]} />
           </PieChart>
         </ResponsiveContainer>
         <div className="flex flex-col gap-1 mt-2">
@@ -84,7 +84,7 @@ export default function DashboardCharts({ daily, byStatus, byUrgency }: Props) {
             <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
             <XAxis dataKey="level" tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
             <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
-            <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} formatter={(v: number) => [v, "Laporan"]} />
+            <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} formatter={(v) => [v, "Laporan"]} />
             <Bar dataKey="count" radius={[6, 6, 0, 0]}>
               {byUrgency.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
             </Bar>
