@@ -579,6 +579,6 @@ export async function POST(request: Request) {
   }
 
   const update = await request.json();
-  handleUpdate(update).catch(console.error);
+  await handleUpdate(update).catch(console.error);
   return Response.json({ ok: true });
 }
