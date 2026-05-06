@@ -24,11 +24,15 @@ const conversationState = new Map<string, ConversationState>();
 // ─── Telegram API helpers ─────────────────────────────────────────────────────
 
 async function sendMessage(chatId: number | string, text: string, extra?: object) {
-  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+  const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ chat_id: chatId, text, parse_mode: "HTML", ...extra }),
   });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    console.error("[WALI bot] sendMessage failed:", err);
+  }
 }
 
 async function answerCallback(callbackQueryId: string, text?: string) {
