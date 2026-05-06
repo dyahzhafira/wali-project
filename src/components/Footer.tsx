@@ -48,7 +48,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-2.5">
               {[
                 { href: "/telegram", label: "Cara Kerja Bot" },
-                { href: "https://t.me/wali_invasif_bot", label: "Buka Bot @wali_invasif_bot", external: true },
+                { href: "https://t.me/YourWali_bot", label: "Buka Bot @YourWali_bot", external: true },
               ].map(({ href, label, external }) => (
                 <li key={href}>
                   {external ? (
