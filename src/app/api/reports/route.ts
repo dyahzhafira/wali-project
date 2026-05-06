@@ -92,9 +92,9 @@ export async function POST(request: Request) {
       .eq("action", "create_report")
       .gte("created_at", since);
 
-    if ((count ?? 0) >= 10) {
+    if ((count ?? 0) >= 12) {
       return Response.json(
-        { error: "Batas laporan harian tercapai (10/hari). Coba lagi besok." },
+        { error: "Batas laporan harian tercapai (12/hari). Coba lagi besok." },
         { status: 429 }
       );
     }

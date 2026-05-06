@@ -62,7 +62,7 @@ export default function SituationCommentPanel({ reportId, counts: initialCounts 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type, fingerprint_hash: fp }),
       });
-      if (res.status === 429) { toast.error("Batas komentar hari ini sudah tercapai (maks 5/hari)"); return; }
+      if (res.status === 429) { toast.error("Batas komentar harian tercapai (25/hari)"); return; }
       if (!res.ok) throw new Error();
       setCounts(prev => ({ ...prev, [type]: prev[type] + 1 }));
       setVoted(type);

@@ -10,26 +10,21 @@ const config: Config = {
     extend: {
       colors: {
         wali: {
-          50:  "#e8f8f5",
-          100: "#c8ede7",
-          200: "#9ddcd0",
-          300: "#6ac4b6",
-          400: "#3dab9b",
-          500: "#2a9e8e",
-          600: "#228076",
-          700: "#1b6560",
-          800: "#174f4b",
-          900: "#123c39",
-          950: "#0a2422",
-        },
-        teal: {
-          dark: "#1B5E5C",
-          mid:  "#2A9E8E",
-          light:"#E8F8F5",
+          50:  "#E7E9D8",  /* krem */
+          100: "#A5C6DB",  /* biru muda */
+          200: "#7db8d4",
+          300: "#239DCA",  /* biru tua */
+          400: "#1a8ab5",
+          500: "#6DAF5F",  /* ijo muda */
+          600: "#4d9640",
+          700: "#03685E",  /* ijo tua — primary */
+          800: "#024d45",
+          900: "#01342f",
+          950: "#011f1c",
         },
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui"],
+        sans: ["Montserrat", "ui-sans-serif", "system-ui"],
       },
     },
   },

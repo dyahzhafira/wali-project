@@ -25,7 +25,7 @@ export async function POST(
 
   const supabase = await createServiceClient();
 
-  // Rate limit: max 5 comments per 24h per fingerprint_hash
+  // Rate limit: max 25 comments per 24h per fingerprint_hash
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   const { count } = await supabase
     .from("situation_comments")
@@ -33,9 +33,9 @@ export async function POST(
     .eq("fingerprint_hash", fingerprint_hash)
     .gte("created_at", since);
 
-  if ((count ?? 0) >= 5) {
+  if ((count ?? 0) >= 25) {
     return Response.json(
-      { error: "Terlalu banyak komentar. Coba lagi dalam 24 jam." },
+      { error: "Batas komentar harian tercapai (25/hari). Coba lagi besok." },
       { status: 429 }
     );
   }

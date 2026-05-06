@@ -1,10 +1,9 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
-import { Fish } from "lucide-react";
+import { Fish, Search, X } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
-import toast from "react-hot-toast";
 import { StatusBadge } from "@/components/ui/Badge";
 import { UrgencyDisplay } from "@/components/ui/UrgencyDisplay";
 import { Button } from "@/components/ui/Button";
@@ -27,8 +26,8 @@ export default function AdminReportListPage() {
   const [location, setLocation] = useState("");
   const [locationInput, setLocationInput] = useState("");
   const [offset, setOffset] = useState(0);
-  const [selected, setSelected] = useState<string[]>([]);
   const LIMIT = 20;
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetch_reports = useCallback(async (reset = false) => {
     setLoading(true);
@@ -42,27 +41,21 @@ export default function AdminReportListPage() {
       else setReports(prev => [...prev, ...(data.reports || [])]);
       setTotal(data.total || 0);
     } catch { } finally { setLoading(false); }
-  }, [status, sort, offset]);
+  }, [status, sort, offset, location]);
 
   useEffect(() => { fetch_reports(true); }, [status, sort, location]);
 
-  const toggleSelect = (id: string) => setSelected(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
-  const selectAll = () => setSelected(reports.map(r => r.id));
-  const clearSelect = () => setSelected([]);
+  // Debounced search — otomatis cari 400ms setelah berhenti mengetik
+  const handleSearchChange = (val: string) => {
+    setLocationInput(val);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => setLocation(val), 400);
+  };
 
-  const bulkUpdate = async (newStatus: string) => {
-    if (!selected.length) return;
-    try {
-      await Promise.all(selected.map(id => fetch(`/api/reports/${id}/status`, {
-        method: "PATCH", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      })));
-      toast.success(`${selected.length} laporan berhasil diperbarui ke "${newStatus}"`);
-    } catch {
-      toast.error("Gagal memperbarui beberapa laporan");
-    }
-    clearSelect();
-    fetch_reports(true);
+  const clearSearch = () => {
+    setLocationInput("");
+    setLocation("");
+    if (debounceRef.current) clearTimeout(debounceRef.current);
   };
 
   return (
@@ -78,42 +71,38 @@ export default function AdminReportListPage() {
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-4 flex flex-wrap gap-3 items-end">
         <div>
           <label className="text-xs font-medium text-gray-600 block mb-1">Status</label>
-          <select value={status} onChange={e => setStatus(e.target.value)} className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:ring-2 focus:ring-wali-500 outline-none">
+          <select value={status} onChange={e => setStatus(e.target.value)} className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:ring-2 focus:ring-wali-700 outline-none">
             {STATUS_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
         </div>
         <div>
           <label className="text-xs font-medium text-gray-600 block mb-1">Urutkan</label>
-          <select value={sort} onChange={e => setSort(e.target.value)} className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:ring-2 focus:ring-wali-500 outline-none">
+          <select value={sort} onChange={e => setSort(e.target.value)} className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:ring-2 focus:ring-wali-700 outline-none">
             <option value="priority_score">Prioritas Tertinggi</option>
             <option value="created_at">Terbaru</option>
           </select>
         </div>
         <div>
           <label className="text-xs font-medium text-gray-600 block mb-1">Cari Wilayah / Lokasi</label>
-          <form onSubmit={e => { e.preventDefault(); setLocation(locationInput); }} className="flex gap-1">
+          <div className="relative flex items-center">
+            {!locationInput && (
+              <Search size={14} className="absolute left-2.5 text-gray-400 pointer-events-none" />
+            )}
             <input
               type="text"
               value={locationInput}
-              onChange={e => setLocationInput(e.target.value)}
-              placeholder="Nama lokasi / kecamatan..."
-              className="rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:ring-2 focus:ring-wali-500 outline-none w-52"
+              onChange={e => handleSearchChange(e.target.value)}
+              placeholder="Ketik nama lokasi..."
+              className={`rounded-lg border border-gray-200 pr-7 py-1.5 text-sm focus:ring-2 focus:ring-wali-700 outline-none w-52 ${locationInput ? "pl-3" : "pl-8"}`}
             />
-            <button type="submit" className="px-3 py-1.5 rounded-lg bg-wali-700 text-white text-sm font-medium hover:bg-wali-800 transition-colors">Cari</button>
-            {location && (
-              <button type="button" onClick={() => { setLocation(""); setLocationInput(""); }}
-                className="px-3 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors">✕</button>
+            {locationInput && (
+              <button type="button" onClick={clearSearch}
+                className="absolute right-2 text-gray-400 hover:text-gray-600">
+                <X size={13} />
+              </button>
             )}
-          </form>
-        </div>
-        {selected.length > 0 && (
-          <div className="flex items-center gap-2 ml-auto">
-            <span className="text-sm text-gray-600">{selected.length} dipilih</span>
-            <Button size="sm" variant="secondary" onClick={() => bulkUpdate("terverifikasi")}>Verifikasi</Button>
-            <Button size="sm" variant="secondary" onClick={() => bulkUpdate("dismissed")}>Dismiss</Button>
-            <Button size="sm" variant="ghost" onClick={clearSelect}>Batal</Button>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Table */}
@@ -122,9 +111,6 @@ export default function AdminReportListPage() {
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="px-4 py-3 text-left">
-                  <input type="checkbox" checked={selected.length === reports.length && reports.length > 0} onChange={() => selected.length === reports.length ? clearSelect() : selectAll()} className="rounded" />
-                </th>
                 <th className="px-4 py-3 text-left font-medium text-gray-600">Laporan</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-600">Urgensi</th>
@@ -137,13 +123,10 @@ export default function AdminReportListPage() {
             <tbody className="divide-y divide-gray-50">
               {loading && reports.length === 0 ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <tr key={i}><td colSpan={8} className="px-4 py-3"><div className="h-4 bg-gray-100 rounded animate-pulse" /></td></tr>
+                  <tr key={i}><td colSpan={7} className="px-4 py-3"><div className="h-4 bg-gray-100 rounded animate-pulse" /></td></tr>
                 ))
               ) : reports.map(report => (
                 <tr key={report.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3">
-                    <input type="checkbox" checked={selected.includes(report.id)} onChange={() => toggleSelect(report.id)} className="rounded" />
-                  </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-lg overflow-hidden bg-gray-100 shrink-0">

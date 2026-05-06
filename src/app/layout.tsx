@@ -18,9 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Toaster
           position="top-center"
           toastOptions={{
-            style: { borderRadius: "8px", background: "#1b6560", color: "#fff" },
-            success: { style: { background: "#1b6560" } },
-            error: { style: { background: "#dc2626" } },
+            style: { borderRadius: "8px", background: "#03685E", color: "#fff" },
+            success: { style: { background: "#03685E" } },
+            error: { style: { background: "#BA1A1A" } },
           }}
         />
         {children}

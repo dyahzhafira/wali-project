@@ -128,26 +128,6 @@ export default function TelegramPage() {
         </div>
       </div>
 
-      {/* Setup info for developers */}
-      <div className="px-6 py-10 bg-gray-900 text-white">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-lg font-bold mb-4 text-gray-100">Info Setup (untuk Developer)</h2>
-          <div className="bg-gray-800 rounded-xl p-5 font-mono text-sm space-y-2">
-            <p className="text-gray-400"># 1. Buat bot via @BotFather di Telegram, dapatkan TOKEN</p>
-            <p className="text-green-400">TELEGRAM_BOT_TOKEN=<span className="text-yellow-300">your_token_here</span></p>
-            <p className="text-gray-400 mt-3"># 2. Set URL aplikasi</p>
-            <p className="text-green-400">NEXT_PUBLIC_APP_URL=<span className="text-yellow-300">https://your-domain.com</span></p>
-            <p className="text-gray-400 mt-3"># 3. Daftarkan webhook (jalankan sekali saja)</p>
-            <p className="text-blue-400">curl -X POST \</p>
-            <p className="text-blue-400">{"  "}{"\"https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook\""} \</p>
-            <p className="text-blue-400">{"  "}{"-d \"url=https://your-domain.com/api/webhook/telegram\""}</p>
-          </div>
-          <p className="text-gray-400 text-xs mt-4">
-            Setelah webhook terdaftar, semua pesan ke bot akan diteruskan otomatis ke endpoint <code className="text-gray-300">/api/webhook/telegram</code>.
-          </p>
-        </div>
-      </div>
-
       {/* CTA */}
       <div className="px-6 py-10 bg-white text-center">
         <div className="max-w-sm mx-auto">

@@ -1,24 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-wali-50:  #e6f4f1;
-  --color-wali-100: #c8ede7;
-  --color-wali-200: #9ddcd0;
-  --color-wali-300: #6ac4b6;
-  --color-wali-400: #3dab9b;
-  --color-wali-500: #2a9e8e;
-  --color-wali-600: #228076;
-  --color-wali-700: #1b6560;
-  --color-wali-800: #174f4b;
-  --color-wali-900: #123c39;
-  --color-wali-950: #0a2422;
+  /* ── WALI Color Palette ── */
+  --color-wali-50:  #E7E9D8;   /* krem */
+  --color-wali-100: #A5C6DB;   /* biru muda */
+  --color-wali-200: #7db8d4;
+  --color-wali-300: #239DCA;   /* biru tua */
+  --color-wali-400: #1a8ab5;
+  --color-wali-500: #6DAF5F;   /* ijo muda */
+  --color-wali-600: #4d9640;
+  --color-wali-700: #03685E;   /* ijo tua — primary */
+  --color-wali-800: #024d45;
+  --color-wali-900: #01342f;
+  --color-wali-950: #011f1c;
 
   --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
   background: #ffffff;
-  color: #111827;
+  color: #000000;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -27,24 +28,24 @@ body {
   box-sizing: border-box;
 }
 
-/* Header solid — dark teal, no gradient */
+/* Header — biru tua */
 .wali-header {
-  background: #0e7490;
+  background: #239DCA;
 }
 
-/* Legacy alias — now solid color, no gradient */
+/* Hero / section gradient — biru tua */
 .wali-gradient {
-  background: #0e7490;
+  background: #239DCA;
 }
 
-/* Dark teal used on admin accent areas */
+/* Admin nav & dark accent areas — ijo tua */
 .wali-gradient-dark {
-  background: #1b6560;
+  background: #03685E;
 }
 
-/* CTA buttons — solid teal, no cream fade */
+/* CTA button — ijo tua → ijo muda */
 .btn-gradient {
-  background: linear-gradient(135deg, #066A5F 0%, #1d8a7a 100%);
+  background: linear-gradient(135deg, #03685E 0%, #6DAF5F 100%);
 }
 
 /* Section backgrounds */

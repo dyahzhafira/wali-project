@@ -33,7 +33,7 @@ export default async function LandingPage() {
     <div className="flex flex-col bg-white">
 
       {/* ── HERO (Mobile-first — fish z-0, card z-10) ── */}
-      <section className="relative overflow-hidden" style={{ background: "linear-gradient(160deg, #064e4a 0%, #0e7490 60%, #155e75 100%)" }}>
+      <section className="relative overflow-hidden" style={{ background: "linear-gradient(160deg, #03685E 0%, #239DCA 65%, #1a8ab5 100%)" }}>
 
         {/* Top text area */}
         <div className="relative z-10 px-6 pt-10 pb-2 max-w-lg mx-auto text-center">
@@ -280,7 +280,7 @@ export default async function LandingPage() {
       </section>
 
       {/* ── CTA PORTAL DINAS ── */}
-      <section className="px-6 py-10" style={{ background: "#0e7490" }}>
+      <section className="px-6 py-10" style={{ background: "#239DCA" }}>
         <div className="max-w-3xl mx-auto text-center">
           <Shield size={36} className="text-white/60 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-2">Apakah Anda Petugas Dinas?</h2>
