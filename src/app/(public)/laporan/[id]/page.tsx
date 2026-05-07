@@ -8,7 +8,7 @@ interface Props { params: Promise<{ id: string }> }
 
 async function getReport(id: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const baseUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/^﻿/, "") || "https://wali-lake.vercel.app";
     const res = await fetch(`${baseUrl}/api/reports/${id}`, { next: { revalidate: 10 } });
     if (!res.ok) return null;
     const data = await res.json();
@@ -36,7 +36,7 @@ export default async function ReportDetailPage({ params }: Props) {
       {/* ── HEADER ── */}
       <div className="wali-gradient px-6 py-8">
         <div className="max-w-3xl mx-auto">
-          {/* Urgency badge (top-right) — Figma: red gradient pill for "Darurat" */}
+          {/* Urgency badge (top-right): red gradient pill for "Darurat" */}
           <div className="flex justify-end mb-3">
             <span
               className="px-5 py-1.5 rounded-full text-white font-semibold text-sm shadow-sm"
@@ -46,12 +46,12 @@ export default async function ReportDetailPage({ params }: Props) {
             </span>
           </div>
 
-          {/* Location name — Figma: SemiBold/Bold 48px white */}
+          {/* Location name: SemiBold/Bold 48px white */}
           <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-2 drop-shadow">
             {report.location_name || "Lokasi Laporan"}
           </h1>
 
-          {/* Address + time — Figma: Medium 20px white */}
+          {/* Address + time: Medium 20px white */}
           <div className="flex flex-col gap-1 mb-4">
             {report.location_name && (
               <div className="flex items-center gap-2 text-white/90 font-medium">

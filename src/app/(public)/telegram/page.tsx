@@ -35,7 +35,7 @@ const STEPS = [
     icon: MessageCircle,
     step: "5",
     title: "Deskripsikan Situasi",
-    desc: "Ceritakan kondisi ikan di sana — jumlah, perilaku, kondisi air, dsb.",
+    desc: "Ceritakan kondisi ikan di sana: jumlah, perilaku, kondisi air, dsb.",
     code: "Contoh: ~20 ekor di tepi sungai...",
   },
   {
@@ -74,7 +74,7 @@ export default function TelegramPage() {
           </div>
           <h1 className="text-3xl font-bold text-white mb-3">Lapor via Telegram</h1>
           <p className="text-white/85 font-medium leading-relaxed">
-            Laporkan ikan sapu-sapu invasif langsung dari aplikasi Telegram Anda — tanpa harus buka browser.
+            Laporkan ikan sapu-sapu invasif langsung dari aplikasi Telegram Anda, tanpa harus buka browser.
           </p>
           <a
             href="https://t.me/YourWali_bot"
@@ -136,7 +136,7 @@ export default function TelegramPage() {
             <div>
               <p className="font-bold text-amber-800 mb-1">Gunakan Fitur Ini dengan Bijak</p>
               <p className="text-sm text-amber-700 leading-relaxed">
-                Sistem WALI — baik melalui Telegram maupun website — dilengkapi mekanisme deteksi laporan tidak wajar. Setiap laporan yang masuk dapat dilacak dan diverifikasi oleh tim admin. Laporan palsu, berulang, atau yang tidak mencerminkan kondisi nyata di lapangan dapat dihapus dan dilaporkan kepada pihak berwenang. Gunakan platform ini untuk melaporkan kejadian yang benar-benar Anda temukan secara langsung.
+                Sistem WALI, baik melalui Telegram maupun website, dilengkapi mekanisme deteksi laporan tidak wajar. Setiap laporan yang masuk dapat dilacak dan diverifikasi oleh tim admin. Laporan palsu, berulang, atau yang tidak mencerminkan kondisi nyata di lapangan dapat dihapus dan dilaporkan kepada pihak berwenang. Gunakan platform ini untuk melaporkan kejadian yang benar-benar Anda temukan secara langsung.
               </p>
             </div>
           </div>

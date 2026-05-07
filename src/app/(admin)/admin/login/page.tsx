@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 export default function AdminLoginPage() {
@@ -38,6 +39,13 @@ export default function AdminLoginPage() {
       </div>
 
       <div className="relative w-full max-w-sm">
+        {/* Back to homepage */}
+        <div className="text-center mb-4">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-white/70 hover:text-white text-sm font-medium transition-colors">
+            ← Kembali ke Beranda
+          </Link>
+        </div>
+
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4"
@@ -99,7 +107,7 @@ export default function AdminLoginPage() {
         </div>
 
         <p className="text-center text-white/50 text-xs mt-6">
-          © 2025 WALI — Warga Andil Lawan Invasif
+          © 2025 WALI, Warga Andil Lawan Invasif
         </p>
       </div>
     </div>

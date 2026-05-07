@@ -1,48 +1,90 @@
-# WALI — Warga Andil Lawan Invasif
+# WALI: Warga Andil Lawan Invasif
 
-Platform pengawasan ikan invasif (ikan sapu-sapu) berbasis komunitas untuk Indonesia. Dibangun untuk IYREF Hackathon 2026 · SRE ITB.
+> Platform interaktif pengawasan dan pelaporan ikan invasif berbasis partisipasi masyarakat.
+> Dibangun untuk **IYREF Hackathon 2026 · SRE ITB**.
+
+🌐 **Live:** https://wali-lake.vercel.app
+🤖 **Bot Telegram:** [@YourWali_bot](https://t.me/YourWali_bot)
+
+---
 
 ## Tentang WALI
 
-WALI memungkinkan warga melaporkan keberadaan ikan invasif (terutama ikan sapu-sapu/pleco) di perairan Indonesia. Laporan dikumpulkan, divisualisasikan di peta, dan ditindaklanjuti oleh dinas terkait — dengan sistem prioritas otomatis berdasarkan reaksi komunitas.
+WALI (Warga Andil Lawan Invasif) adalah platform yang menghubungkan warga dengan Dinas Lingkungan Hidup untuk mendeteksi, memetakan, dan menanggulangi ikan sapu-sapu (*Hypostomus plecostomus*) yang invasif di perairan Indonesia.
+
+Warga dapat melaporkan temuan ikan invasif via web atau Telegram. Laporan masuk ke sistem dengan foto, koordinat GPS, dan tingkat urgensi, lalu dinas menindaklanjuti dengan sistem prioritas otomatis.
+
+---
 
 ## Fitur Utama
 
 ### Publik (Warga)
-- **Forum Laporan** — lihat semua laporan, beri reaksi (like), dan update situasi terkini dari lokasi
-- **Buat Laporan** — submit laporan lengkap dengan foto, lokasi GPS, dan tingkat urgensi
-- **Peta Persebaran** — visualisasi interaktif semua titik laporan dengan warna berdasarkan urgensi
-- **Dashboard Publik** — statistik agregat: total laporan, ikan ditangkap, sebaran per status
-- **Bot Telegram** — lapor langsung via `@wali_invasif_bot` tanpa buka browser, terima notifikasi update status
+- **Forum Laporan**: lihat semua laporan, beri reaksi, dan update situasi terkini dari lokasi
+- **Buat Laporan**: submit laporan dengan foto, lokasi GPS, deskripsi, dan tingkat urgensi (1–5)
+- **Peta Persebaran**: visualisasi interaktif titik laporan berdasarkan status & urgensi
+- **Dashboard Publik**: statistik agregat: total laporan, ikan ditangkap, sebaran per status
+- **Bot Telegram**: lapor & pantau status langsung via [@YourWali_bot](https://t.me/YourWali_bot)
 
-### Admin / Portal Dinas
-- **Command Center** — dashboard admin dengan peta, charts tren, leaderboard petugas, aktivitas terbaru
-- **Manajemen Laporan** — verifikasi, ubah status, assign ke petugas, filter by lokasi/wilayah
-- **Progress Log** — petugas catat tindakan lapangan: jumlah ikan ditangkap, foto dokumentasi
-- **Notifikasi Harian** — laporan baru, backlog belum diverifikasi, update 24 jam terakhir
-- **Priority Score** — skor otomatis untuk menentukan urutan penanganan
+### Admin / Portal Dinas (`/admin`)
+- **Command Center**: dashboard dengan peta, chart tren, leaderboard petugas, aktivitas terbaru
+- **Manajemen Laporan**: verifikasi, ubah status, assign petugas, filter wilayah, priority queue
+- **Progress Log**: catat tindakan lapangan: deskripsi, jumlah ikan tertangkap, foto dokumentasi
+- **Laporan Resmi**: buat laporan langsung dari dinas (langsung berstatus Terverifikasi)
+- **Notifikasi**: laporan baru, backlog belum diverifikasi, update 24 jam terakhir
+- **Priority Score**: skor otomatis penentu urutan penanganan
+
+---
 
 ## Formula Priority Score
 
 ```
-Priority Score = react×3 + masih_ada×2 + bertambah×3 + berkurang×(−1) + tidak_ada×(−3) + urgensi×1
+Score = (reaksi × 3) + (masih_ada × 2) + (bertambah × 3)
+      + (berkurang × −1) + (tidak_ada × −3)
+      + (urgensi × 1) + (hari_belum_ditangani × 0.5)
 ```
 
-Tingkat urgensi dipengaruhi oleh jumlah laporan di suatu area dan banyaknya reaksi warga.
+Semakin tinggi skor, semakin cepat laporan muncul di antrian prioritas dinas.
+
+---
 
 ## Tech Stack
 
 | Layer | Teknologi |
 |---|---|
 | Frontend | Next.js 16 (App Router), React, Tailwind CSS v4 |
-| Backend | Next.js API Routes, Supabase (Postgres + Auth + Storage) |
+| Backend | Next.js API Routes (serverless) |
+| Database | Supabase (Postgres + Auth + Storage) |
 | Map | Leaflet.js (dynamic import, SSR-safe) |
 | Charts | Recharts |
 | Bot | Telegram Bot API (webhook) |
-| Rate limiting | FingerprintJS (anonymous) |
-| Deployment | Vercel (recommended) |
+| Rate Limiting | IP-based + FingerprintJS (anonymous) |
+| Deployment | Vercel |
 
-## Setup
+---
+
+## Struktur Proyek
+
+```
+src/
+├── app/
+│   ├── (public)/          # Beranda, forum, peta, dashboard, sukses, telegram
+│   ├── (admin)/admin/     # Portal dinas: dashboard, laporan, notifikasi, profil
+│   └── api/               # API routes: reports, stats, webhook/telegram, admin
+├── components/
+│   ├── forum/             # ReportCard, SituationCommentPanel, ProgressTimeline
+│   ├── forms/             # ReportForm, ProgressLogForm, PhotoUploader, LocationPicker
+│   ├── map/               # MiniMap, AdminMapEmbed
+│   ├── dashboard/         # DashboardCharts, AdminNav
+│   └── ui/                # Badge, Button, Modal, UrgencyDisplay, StatCard
+├── lib/
+│   ├── supabase/          # Browser & server Supabase clients (BOM-safe)
+│   └── telegram/          # Status notification helper
+└── types/                 # TypeScript interfaces
+```
+
+---
+
+## Setup Lokal
 
 ### 1. Clone & Install
 
@@ -70,11 +112,7 @@ TELEGRAM_BOT_TOKEN=your_telegram_bot_token
 npm run dev
 ```
 
-### 4. Setup Telegram Bot (opsional)
-
-1. Buat bot via `@BotFather` di Telegram, dapatkan token
-2. Set `TELEGRAM_BOT_TOKEN` di `.env.local`
-3. Daftarkan webhook (jalankan sekali setelah deploy):
+### 4. Setup Webhook Telegram (setelah deploy)
 
 ```bash
 curl -X POST \
@@ -82,35 +120,20 @@ curl -X POST \
   -d "url=https://your-domain.com/api/webhook/telegram"
 ```
 
-## Struktur Proyek
-
-```
-src/
-├── app/
-│   ├── (public)/          # Halaman publik (beranda, forum, peta, dashboard, telegram)
-│   ├── (admin)/admin/     # Portal dinas (dashboard, laporan, notifikasi)
-│   └── api/               # API routes (reports, stats, webhook/telegram, dll)
-├── components/
-│   ├── forum/             # ReportCard, SituationCommentPanel, ProgressTimeline, dll
-│   ├── forms/             # ReportForm, ProgressLogForm, PhotoUploader
-│   ├── map/               # MiniMap, AdminMapEmbed
-│   ├── dashboard/         # DashboardCharts, AdminNav
-│   └── ui/                # Badge, Button, Modal, UrgencyDisplay, dll
-├── lib/
-│   ├── supabase/          # Client & server Supabase helpers
-│   ├── fingerprint/       # FingerprintJS wrapper
-│   └── telegram/          # Telegram notification helper
-└── types/                 # TypeScript interfaces
-```
+---
 
 ## Peran Admin
 
 | Role | Akses |
 |---|---|
 | `super_admin` | Full akses semua fitur |
-| `admin_dinas` | Dashboard, kelola laporan, lihat notifikasi |
-| `petugas_lapangan` | Lihat laporan yang ditugaskan, tambah progress log |
+| `admin_dinas` | Dashboard, kelola laporan, notifikasi, laporan resmi |
+| `petugas_lapangan` | Laporan yang ditugaskan, tambah progress log |
+
+Login admin: `/admin/login`
+
+---
 
 ## Lisensi
 
-MIT — IYREF Hackathon 2026 · SRE ITB
+MIT, IYREF Hackathon 2026 · SRE ITB

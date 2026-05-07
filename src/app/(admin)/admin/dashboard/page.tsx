@@ -15,7 +15,7 @@ import AdminMapEmbedClient from "@/components/map/AdminMapEmbedClient";
 
 async function getDashboardData(userId: string, role: string, wilayah?: string) {
   const supabase = await createClient();
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/^﻿/, "") || "https://wali-lake.vercel.app";
 
   const topUrl = `${baseUrl}/api/reports?sort=priority_score&limit=10${wilayah ? `&location=${encodeURIComponent(wilayah)}` : ""}`;
   const [statsRes, topRes] = await Promise.all([
@@ -136,7 +136,7 @@ async function getDashboardData(userId: string, role: string, wilayah?: string) 
     fish_caught_count: log.fish_caught_count,
     logged_at: log.logged_at,
     officer_name: log.admin_users?.full_name ?? "Petugas",
-    location_name: log.reports?.location_name ?? "—",
+    location_name: log.reports?.location_name ?? "-",
   }));
 
   return {
@@ -321,12 +321,12 @@ export default async function AdminDashboardPage({ searchParams }: { searchParam
 
           {/* ── CHARTS + NOTIF FEED (2-col) ── */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            {/* Charts — 2/3 width */}
+            {/* Charts: 2/3 width */}
             <div className="lg:col-span-2">
               <DashboardCharts daily={daily} byStatus={byStatus} byUrgency={byUrgency} />
             </div>
 
-            {/* Notification / Alert feed — 1/3 */}
+            {/* Notification / Alert feed: 1/3 */}
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
               <div className="px-5 py-4 flex items-center justify-between border-b border-gray-50"
                 style={{ background: "#1b6560" }}>

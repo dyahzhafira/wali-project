@@ -9,7 +9,7 @@
   --color-wali-400: #1a8ab5;
   --color-wali-500: #6DAF5F;   /* ijo muda */
   --color-wali-600: #4d9640;
-  --color-wali-700: #03685E;   /* ijo tua — primary */
+  --color-wali-700: #03685E;   /* ijo tua, primary */
   --color-wali-800: #024d45;
   --color-wali-900: #01342f;
   --color-wali-950: #011f1c;
@@ -28,22 +28,22 @@ body {
   box-sizing: border-box;
 }
 
-/* Header — biru tua */
+/* Header: biru tua */
 .wali-header {
   background: #239DCA;
 }
 
-/* Hero / section gradient — biru tua */
+/* Hero / section gradient: biru tua */
 .wali-gradient {
   background: #239DCA;
 }
 
-/* Admin nav & dark accent areas — ijo tua */
+/* Admin nav & dark accent areas: ijo tua */
 .wali-gradient-dark {
   background: #03685E;
 }
 
-/* CTA button — ijo tua → ijo muda */
+/* CTA button: ijo tua ke ijo muda */
 .btn-gradient {
   background: linear-gradient(135deg, #03685E 0%, #6DAF5F 100%);
 }

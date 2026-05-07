@@ -1,11 +1,12 @@
+"use client";
 import Link from "next/link";
 import { CheckCircle, Copy, Share2, Fish } from "lucide-react";
+import { useParams } from "next/navigation";
 
-interface Props { params: Promise<{ token: string }> }
-
-export default async function SuccessPage({ params }: Props) {
-  const { token } = await params;
-  const reportUrl = `${process.env.NEXT_PUBLIC_APP_URL || ""}/laporan/${token}`;
+export default function SuccessPage() {
+  const { token } = useParams<{ token: string }>();
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/^﻿/, "") || "https://wali-lake.vercel.app";
+  const reportUrl = `${appUrl}/laporan/${token}`;
 
   return (
     <div className="min-h-screen bg-wali-50 flex items-center justify-center px-4 py-12">
@@ -42,7 +43,7 @@ export default async function SuccessPage({ params }: Props) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <Link href={`/laporan`} className="w-full py-3 bg-wali-700 hover:bg-wali-800 text-white rounded-xl font-medium transition-colors">
+          <Link href="/laporan" className="w-full py-3 bg-wali-700 hover:bg-wali-800 text-white rounded-xl font-medium transition-colors">
             Lihat Forum Laporan
           </Link>
           <Link href="/laporan/baru" className="w-full py-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl font-medium transition-colors">

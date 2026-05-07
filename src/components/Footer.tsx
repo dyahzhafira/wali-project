@@ -78,7 +78,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-wali-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-wali-500">© 2026 WALI — Warga Andil Lawan Invasif. IYREF Hackathon 2026.</p>
+          <p className="text-xs text-wali-500">© 2026 WALI, Warga Andil Lawan Invasif. IYREF Hackathon 2026.</p>
           <p className="text-xs text-wali-600">Nature-Based Solutions & Blue Economy</p>
         </div>
       </div>

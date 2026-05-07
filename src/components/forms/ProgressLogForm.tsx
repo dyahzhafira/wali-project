@@ -25,9 +25,9 @@ export default function ProgressLogForm({ reportId, onSuccess, onCancel }: Props
       const photoUrls: string[] = [];
       for (const file of photos) {
         const filename = `progress_${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
-        const { data, error } = await supabase.storage.from("progress-photos").upload(filename, file, { contentType: "image/jpeg" });
+        const { data, error } = await supabase.storage.from("report-photos").upload(filename, file, { contentType: "image/jpeg" });
         if (error) throw error;
-        const { data: { publicUrl } } = supabase.storage.from("progress-photos").getPublicUrl(data.path);
+        const { data: { publicUrl } } = supabase.storage.from("report-photos").getPublicUrl(data.path);
         photoUrls.push(publicUrl);
       }
       const res = await fetch(`/api/reports/${reportId}/progress`, {

@@ -77,7 +77,7 @@ export async function POST(request: Request) {
   const isDinasUser = !!authUser;
 
   // ── CEK RATE LIMIT berbasis IP (hanya public web, bukan admin/telegram) ──
-  // Pakai tabel rate_limits — counter HANYA ditambah setelah insert laporan sukses.
+  // Pakai tabel rate_limits, counter HANYA ditambah setelah insert laporan sukses.
   const clientIp =
     request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
     request.headers.get("x-real-ip") ||
@@ -125,7 +125,7 @@ export async function POST(request: Request) {
     return Response.json({ error: error.message }, { status: 500 });
   }
 
-  // ── CATAT RATE LIMIT — hanya setelah insert berhasil ──
+  // ── CATAT RATE LIMIT: hanya setelah insert berhasil ──
   if (!isDinasUser && source !== "telegram") {
     await supabase.from("rate_limits").insert({
       fingerprint_hash: clientIp,

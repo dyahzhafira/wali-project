@@ -48,7 +48,7 @@ export default function Navbar() {
 
         {/* CTA buttons + hamburger */}
         <div className="flex items-center gap-2">
-          {/* Login Dinas — desktop */}
+          {/* Login Dinas: desktop */}
           <Link href="/admin/login"
             className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full border border-wali-300 text-wali-700 font-semibold text-sm hover:bg-wali-50 transition-colors">
             <Shield size={14} />

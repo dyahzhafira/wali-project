@@ -54,7 +54,7 @@ async function downloadAndStorePhoto(fileId: string): Promise<string | null> {
     // 2. Download photo bytes from Telegram
     const photoRes = await fetch(telegramUrl);
     if (!photoRes.ok) return null;
-    const buffer = await photoRes.arrayBuffer();
+    const blob = await photoRes.blob();
 
     // 3. Upload to Supabase Storage so it persists permanently
     const { createServiceClient } = await import("@/lib/supabase/server");
@@ -62,7 +62,7 @@ async function downloadAndStorePhoto(fileId: string): Promise<string | null> {
     const filename = `tg_${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
     const { data, error } = await supabase.storage
       .from("report-photos")
-      .upload(filename, buffer, { contentType: "image/jpeg" });
+      .upload(filename, blob, { contentType: "image/jpeg" });
 
     if (error || !data) return telegramUrl; // fallback to Telegram URL if upload fails
 
@@ -103,19 +103,19 @@ const WATER_BODY_KEYBOARD = {
 const URGENCY_KEYBOARD = {
   inline_keyboard: [
     [
-      { text: "1 — Rendah (1–5 ekor)",            callback_data: "urg:1" },
+      { text: "1: Rendah (1–5 ekor)",              callback_data: "urg:1" },
     ],
     [
-      { text: "2 — Sedang (5–20 ekor)",            callback_data: "urg:2" },
+      { text: "2: Sedang (5–20 ekor)",              callback_data: "urg:2" },
     ],
     [
-      { text: "3 — Cukup Tinggi (20–50 ekor)",     callback_data: "urg:3" },
+      { text: "3: Cukup Tinggi (20–50 ekor)",       callback_data: "urg:3" },
     ],
     [
-      { text: "4 — Tinggi (50–100 ekor)",          callback_data: "urg:4" },
+      { text: "4: Tinggi (50–100 ekor)",            callback_data: "urg:4" },
     ],
     [
-      { text: "5 — Darurat (>100 ekor / masif)",   callback_data: "urg:5" },
+      { text: "5: Darurat (>100 ekor / masif)",     callback_data: "urg:5" },
     ],
   ],
 };
@@ -124,7 +124,7 @@ const URGENCY_KEYBOARD = {
 
 async function askPhoto(chatId: number | string) {
   await sendMessage(chatId,
-    `📸 <b>Langkah 1 dari 5 — Foto</b>\n\n` +
+    `📸 <b>Langkah 1 dari 5: Foto</b>\n\n` +
     `Kirimkan <b>foto ikan sapu-sapu</b> yang Anda temukan.\n\n` +
     `Tips foto yang baik:\n` +
     `• Ambil dari jarak dekat agar ikan terlihat jelas\n` +
@@ -137,7 +137,7 @@ async function askPhoto(chatId: number | string) {
 async function askLocation(chatId: number | string, photoCount: number) {
   await sendMessage(chatId,
     `✅ <b>${photoCount} foto diterima.</b>\n\n` +
-    `📍 <b>Langkah 2 dari 5 — Lokasi</b>\n\n` +
+    `📍 <b>Langkah 2 dari 5: Lokasi</b>\n\n` +
     `Bagikan lokasi penemuan ikan dengan salah satu cara:\n\n` +
     `<b>Cara 1 (Akurat):</b> Tekan ikon 📎 Attachment → <b>Location</b> → Share My Location\n\n` +
     `<b>Cara 2 (Manual):</b> Ketik nama lokasi secara lengkap.\n` +
@@ -148,7 +148,7 @@ async function askLocation(chatId: number | string, photoCount: number) {
 async function askWaterBody(chatId: number | string) {
   await sendMessage(chatId,
     `✅ <b>Lokasi diterima.</b>\n\n` +
-    `💧 <b>Langkah 3 dari 5 — Jenis Perairan</b>\n\n` +
+    `💧 <b>Langkah 3 dari 5: Jenis Perairan</b>\n\n` +
     `Pilih jenis badan air tempat Anda menemukan ikan:`,
     { reply_markup: WATER_BODY_KEYBOARD }
   );
@@ -157,7 +157,7 @@ async function askWaterBody(chatId: number | string) {
 async function askDescription(chatId: number | string) {
   await sendMessage(chatId,
     `✅ <b>Jenis perairan dicatat.</b>\n\n` +
-    `📝 <b>Langkah 4 dari 5 — Deskripsi Situasi</b>\n\n` +
+    `📝 <b>Langkah 4 dari 5: Deskripsi Situasi</b>\n\n` +
     `Ceritakan kondisi ikan yang Anda temukan. Semakin detail semakin baik.\n\n` +
     `Yang perlu dicantumkan:\n` +
     `• Perkiraan jumlah ikan\n` +
@@ -171,7 +171,7 @@ async function askDescription(chatId: number | string) {
 async function askUrgency(chatId: number | string) {
   await sendMessage(chatId,
     `✅ <b>Deskripsi diterima.</b>\n\n` +
-    `⚠️ <b>Langkah 5 dari 5 — Tingkat Urgensi</b>\n\n` +
+    `⚠️ <b>Langkah 5 dari 5: Tingkat Urgensi</b>\n\n` +
     `Pilih tingkat urgensi berdasarkan <b>perkiraan jumlah ikan</b> yang Anda lihat:`,
     { reply_markup: URGENCY_KEYBOARD }
   );
@@ -244,11 +244,11 @@ async function handleStart(chatId: number | string, firstName?: string) {
     `📍 Tandai lokasi penemuan secara akurat\n` +
     `📋 Pantau status penanganan laporanmu\n\n` +
     `<b>Daftar Perintah:</b>\n` +
-    `/lapor — Buat laporan baru\n` +
-    `/status <code>TOKEN</code> — Cek status laporan\n` +
-    `/notif <code>on|off</code> — Atur notifikasi update\n` +
-    `/info — Info tentang ikan sapu-sapu invasif\n` +
-    `/bantuan — Tampilkan pesan ini\n\n` +
+    `/lapor: Buat laporan baru\n` +
+    `/status <code>TOKEN</code>: Cek status laporan\n` +
+    `/notif <code>on|off</code>: Atur notifikasi update\n` +
+    `/info: Info tentang ikan sapu-sapu invasif\n` +
+    `/bantuan: Tampilkan pesan ini\n\n` +
     `Ketik /lapor untuk mulai melaporkan! 👇`
   );
 }
@@ -291,7 +291,7 @@ async function handleInfo(chatId: number | string) {
     `<b>⚠️ Dampak Negatif:</b>\n` +
     `• Mengancam ikan endemik lokal dari makanan dan ruang hidup\n` +
     `• Merusak tepian sungai dengan membuat lubang sarang\n` +
-    `• Berkembang biak sangat cepat — ratusan telur per siklus\n` +
+    `• Berkembang biak sangat cepat, ratusan telur per siklus\n` +
     `• Mengganggu ekosistem dasar sungai\n` +
     `• Mengurangi hasil tangkapan nelayan tradisional\n\n` +
     `<b>📜 Latar Belakang:</b>\n` +
@@ -319,8 +319,8 @@ async function handleNotif(chatId: number | string, arg: string) {
     await sendMessage(chatId,
       `🔔 <b>Pengaturan Notifikasi</b>\n\n` +
       `Gunakan perintah berikut:\n` +
-      `/notif on — Aktifkan notifikasi\n` +
-      `/notif off — Nonaktifkan notifikasi`
+      `/notif on: Aktifkan notifikasi\n` +
+      `/notif off: Nonaktifkan notifikasi`
     );
   }
 }
@@ -339,10 +339,10 @@ async function handleStatus(chatId: number | string, token: string) {
   const { report } = await res.json();
 
   const STATUS_LABEL: Record<string, string> = {
-    baru: "🔴 Baru — Menunggu verifikasi",
-    terverifikasi: "🔵 Terverifikasi — Siap ditindaklanjuti",
-    proses: "🟡 Dalam Proses — Sedang ditangani petugas",
-    selesai: "🟢 Selesai — Penanganan selesai",
+    baru: "🔴 Baru: Menunggu verifikasi",
+    terverifikasi: "🔵 Terverifikasi: Siap ditindaklanjuti",
+    proses: "🟡 Dalam Proses: Sedang ditangani petugas",
+    selesai: "🟢 Selesai: Penanganan selesai",
   };
 
   const status = STATUS_LABEL[report.status] ?? report.status;
@@ -550,7 +550,7 @@ async function handleUpdate(update: any) {
       return;
     }
     if (text.length < 15) {
-      await sendMessage(chatId, `⚠️ Deskripsi terlalu singkat. Ceritakan lebih detail — minimal 15 karakter.`);
+      await sendMessage(chatId, `⚠️ Deskripsi terlalu singkat. Ceritakan lebih detail, minimal 15 karakter.`);
       return;
     }
     setState(userId, { ...state, description: text, step: "await_urgency" });

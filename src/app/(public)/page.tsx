@@ -46,14 +46,14 @@ export default async function LandingPage() {
   return (
     <div className="flex flex-col bg-white">
 
-      {/* ── HERO (Mobile-first — fish z-0, card z-10) ── */}
+      {/* ── HERO (Mobile-first: fish z-0, card z-10) ── */}
       <section className="relative overflow-hidden" style={{ background: "linear-gradient(160deg, #03685E 0%, #239DCA 65%, #1a8ab5 100%)" }}>
-
+      <div className="flex md:flex-row">
         {/* Top text area */}
-        <div className="relative z-10 px-6 pt-10 pb-2 max-w-lg mx-auto text-center">
+        <div className="relative z-10 md:pt-30 px-6 pt-10 pb-2 max-w-lg mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5 mb-4">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-white/90 text-xs font-semibold tracking-wide">Platform Aktif — {stats.reports_today ?? 0} laporan hari ini</span>
+            <span className="text-white/90 text-xs font-semibold tracking-wide">Platform Aktif: {stats.reports_today ?? 0} laporan hari ini</span>
           </div>
           <p className="text-white/70 text-sm font-semibold tracking-widest uppercase mb-2">halo, WARGA PEDULI!</p>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-3">
@@ -68,7 +68,7 @@ export default async function LandingPage() {
         <div className="relative mx-auto w-64 pt-70">  
           {/* Fish + CTA card section */}
           <div className="relative mx-auto pb-0" style={{ minHeight: 350 }}>
-            {/* Fish mascot — z-0, behind the card */}
+            {/* Fish mascot: z-0, behind the card */}
             <div className="absolute inset-x-0 bottom-0 flex justify-center" style={{ zIndex: 0 }}>
               <Image
                 src="/ikan.png"
@@ -80,7 +80,7 @@ export default async function LandingPage() {
               />
             </div>
 
-            {/* CTA Card — z-10*/}
+            {/* CTA Card: z-10*/}
             <div className="relative mx-auto w-80 -translate-y-6 -translate-x-8" style={{ zIndex: 10 }}>
               <div className="bg-white rounded-3xl shadow-2xl px-6 py-5 text-center border border-white/80"
                 style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.25)" }}>
@@ -102,7 +102,7 @@ export default async function LandingPage() {
           {/* Spacer so fish image shows below card */}
           <div style={{ height: 80 }} />
         </div>
-
+      </div>
         {/* Wave divider */}
         <svg viewBox="0 0 1440 60" className="w-full block relative z-10" style={{ marginTop: -2 }} preserveAspectRatio="none">
           <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="white" />

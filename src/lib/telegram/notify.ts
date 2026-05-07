@@ -1,4 +1,5 @@
-const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const clean = (s?: string) => (s ?? "").replace(/^﻿/, "");
+const TOKEN = clean(process.env.TELEGRAM_BOT_TOKEN);
 const BASE = `https://api.telegram.org/bot${TOKEN}`;
 
 const STATUS_MESSAGES: Record<string, string> = {
@@ -20,7 +21,7 @@ export async function notifyReporterStatusChange(
   if (!statusMsg) return;
 
   const location = locationName ? `\n📍 Lokasi: *${locationName}*` : "";
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const appUrl = clean(process.env.NEXT_PUBLIC_APP_URL) || "https://wali-lake.vercel.app";
   const text = `🐟 *Update Laporan WALI*\n\n${statusMsg}${location}\n\n[Lihat detail laporan](${appUrl}/laporan/${reportId})`;
 
   try {
@@ -35,6 +36,6 @@ export async function notifyReporterStatusChange(
       }),
     });
   } catch {
-    // Non-blocking — don't fail the main request if Telegram is down
+    // Non-blocking, don't fail the main request if Telegram is down
   }
 }

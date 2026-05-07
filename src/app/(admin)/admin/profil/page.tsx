@@ -22,7 +22,7 @@ const ROLE_GRADIENT: Record<string, string> = {
 async function getProfileData(userId: string, userEmail?: string) {
   const supabase = await createClient();
 
-  // Get admin user record — use auth user email as fallback if row not found
+  // Get admin user record, use auth user email as fallback if row not found
   const { data: adminUser } = await supabase
     .from("admin_users")
     .select("*")

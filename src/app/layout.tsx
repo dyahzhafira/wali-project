@@ -6,9 +6,14 @@ import "./globals.css";
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-montserrat" });
 
 export const metadata: Metadata = {
-  title: "WALI — Warga Andil Lawan Invasif",
+  title: "WALI: Warga Andil Lawan Invasif",
   description: "Platform interaktif pengawasan ikan invasif berbasis partisipasi masyarakat",
   keywords: ["ikan sapu-sapu", "invasif", "laporan", "lingkungan", "WALI"],
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+    shortcut: "/logo.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

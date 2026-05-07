@@ -11,11 +11,11 @@ import PhotoUploader from "@/components/forms/PhotoUploader";
 import { createClient } from "@/lib/supabase/client";
 
 const URGENCY_OPTIONS = [
-  { value: 1, label: "1 — 1–5 Ekor (Rendah)", color: "#10b981" },
-  { value: 2, label: "2 — 5–20 Ekor (Sedang)", color: "#84cc16" },
-  { value: 3, label: "3 — 20–50 Ekor (Cukup Tinggi)", color: "#f59e0b" },
-  { value: 4, label: "4 — 50–100 Ekor (Tinggi)", color: "#f97316" },
-  { value: 5, label: "5 — >100 Ekor / Seluruh Perairan (Darurat)", color: "#BA1A1A" },
+  { value: 1, label: "1: 1–5 Ekor (Rendah)", color: "#10b981" },
+  { value: 2, label: "2: 5–20 Ekor (Sedang)", color: "#84cc16" },
+  { value: 3, label: "3: 20–50 Ekor (Cukup Tinggi)", color: "#f59e0b" },
+  { value: 4, label: "4: 50–100 Ekor (Tinggi)", color: "#f97316" },
+  { value: 5, label: "5: >100 Ekor / Seluruh Perairan (Darurat)", color: "#BA1A1A" },
 ];
 
 export default function LaporanResmiBaruPage() {
@@ -30,7 +30,6 @@ export default function LaporanResmiBaruPage() {
     urgency_scale: 3,
     water_body_type: "",
     tindakan: "",
-    reporter_email: "",
   });
 
   const handleChange = (field: string, value: string | number) =>
@@ -62,13 +61,12 @@ export default function LaporanResmiBaruPage() {
         body: JSON.stringify({
           source: "web",
           photos: photoUrls,
-          description: `[LAPORAN RESMI — ${form.unit_kerja}${form.nomor_surat ? ` | No. Surat: ${form.nomor_surat}` : ""}]\n\n${form.description.trim()}${form.tindakan ? `\n\nTindakan yang telah dilakukan: ${form.tindakan}` : ""}`,
+          description: `[LAPORAN RESMI: ${form.unit_kerja}${form.nomor_surat ? ` | No. Surat: ${form.nomor_surat}` : ""}]\n\n${form.description.trim()}${form.tindakan ? `\n\nTindakan yang telah dilakukan: ${form.tindakan}` : ""}`,
           location_lat: location.lat,
           location_lng: location.lng,
           location_name: location.name,
           water_body_type: form.water_body_type || undefined,
           urgency_scale: form.urgency_scale,
-          reporter_email: form.reporter_email || undefined,
         }),
       });
 
@@ -131,15 +129,6 @@ export default function LaporanResmiBaruPage() {
               value={form.nomor_surat}
               onChange={e => handleChange("nomor_surat", e.target.value)}
               placeholder="Contoh: 500/123/DLH/2025"
-            />
-          </div>
-          <div className="mt-3">
-            <Input
-              label="Email Pelapor (opsional)"
-              type="email"
-              value={form.reporter_email}
-              onChange={e => handleChange("reporter_email", e.target.value)}
-              placeholder="petugas@dinas.go.id"
             />
           </div>
         </div>

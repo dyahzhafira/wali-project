@@ -124,7 +124,7 @@ export default function AdminReportDetailPage({ params }: { params: Promise<{ id
               <>
                 <label className="text-xs text-gray-500 font-medium mb-1 block">Tugaskan ke Petugas</label>
                 <select value={assignTo} onChange={e => setAssignTo(e.target.value)} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm mb-3 focus:ring-2 focus:ring-wali-500 outline-none">
-                  <option value="">— Tidak ditugaskan —</option>
+                  <option value="">Tidak ditugaskan</option>
                   {officers.map(o => <option key={o.id} value={o.id}>{o.full_name}</option>)}
                 </select>
               </>
@@ -146,7 +146,7 @@ export default function AdminReportDetailPage({ params }: { params: Promise<{ id
               <h3 className="text-sm font-semibold text-white">Statistik Laporan</h3>
             </div>
             <div className="p-4">
-              {/* Priority Score — prominent badge */}
+              {/* Priority Score: prominent badge */}
               <div className="flex flex-col items-center bg-wali-50 border border-wali-100 rounded-xl p-4 mb-4">
                 <p className="text-xs text-wali-600 font-semibold uppercase tracking-wider mb-1">Priority Score</p>
                 <p className="text-5xl font-extrabold tabular-nums" style={{

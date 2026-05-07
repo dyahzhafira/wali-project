@@ -64,7 +64,7 @@ export default function ReportCard({ report }: Props) {
 
       {/* Footer actions */}
       <div className="flex items-center gap-3 px-4 py-3 border-t border-gray-50 bg-gray-50/50">
-        {/* Like button — fungsional, tidak navigate ke detail */}
+        {/* Like button: fungsional, tidak navigate ke detail */}
         <div onClick={e => e.stopPropagation()}>
           <ReactButton
             reportId={report.id}

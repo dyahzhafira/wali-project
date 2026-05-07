@@ -45,7 +45,7 @@ export default function AdminReportListPage() {
 
   useEffect(() => { fetch_reports(true); }, [status, sort, location]);
 
-  // Debounced search — otomatis cari 400ms setelah berhenti mengetik
+  // Debounced search: otomatis cari 400ms setelah berhenti mengetik
   const handleSearchChange = (val: string) => {
     setLocationInput(val);
     if (debounceRef.current) clearTimeout(debounceRef.current);
